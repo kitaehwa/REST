@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.itwillbs.domain.BoardVO;
 import com.itwillbs.service.BoardService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 /**
  *	 REST방식 요청되는 기본형태
  *   =>  /작업명/기본키 + 메서드 + 데이터
@@ -38,11 +41,18 @@ import com.itwillbs.service.BoardService;
  *     글삭제 : /boards/100 	DELETE방식 
  *
  */
+
+// http://localhost:8088/(context-path)/swagger-ui/index.html
+// http://localhost:8088/swagger-ui/index.html
+
 @RestController
 @RequestMapping(value = "/boards")
+//@RequestMapping("/api")
+@Api(tags = "게시판 REST컨트롤러")
 public class BoardRESTController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BoardRESTController.class);
+	
 	
 	
 	@Inject
@@ -50,7 +60,8 @@ public class BoardRESTController {
 	
 	
 	// 글 쓰기 : /boards + 데이터(JSON)  POST방식
-	@RequestMapping(value = "",method = RequestMethod.POST)
+	@RequestMapping(value = "/boards",method = RequestMethod.POST)
+	@ApiOperation(notes = "게시판 글쓰기",value = "게시판 글쓰기")
 	public ResponseEntity<String> addBoard(@RequestBody BoardVO vo){
 		logger.info("addBoard() 실행");
 		logger.info("vo : {}",vo);
@@ -118,20 +129,23 @@ public class BoardRESTController {
 		return new ResponseEntity<String>("updateOK",HttpStatus.OK);		
 	}
 	
-	// 글삭제 : /boards/100 
-	@RequestMapping(value="/{bno}",method=RequestMethod.DELETE)
+	// 글삭제 : /boards/100 	DELETE방식
+	@RequestMapping(value = "/{bno}",method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteBoard(@PathVariable("bno") int bno){
 		
-		ResponseEntity<String> respEntity=null;
+		ResponseEntity<String> respEntity = null;
 		
 		try {
 			bService.remove(bno);
-			respEntity = new ResponseEntity<String>("deleteOK",HttpStatus.OK);
+			respEntity
+			  = new ResponseEntity<String>("deleteOK",HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			respEntity = new ResponseEntity<String>("deleteErr",HttpStatus.INTERNAL_SERVER_ERROR);
+			respEntity
+			 = new ResponseEntity<String>("deleteErr",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return respEntity;
+		
+		return respEntity;	
 	}
 	
 	
