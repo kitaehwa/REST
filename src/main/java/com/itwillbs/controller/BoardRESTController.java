@@ -46,8 +46,8 @@ import io.swagger.annotations.ApiOperation;
 // http://localhost:8088/swagger-ui/index.html
 
 @RestController
-@RequestMapping(value = "/boards")
-//@RequestMapping("/api")
+// @RequestMapping(value = "/boards")
+@RequestMapping("/api")
 @Api(tags = "게시판 REST컨트롤러")
 public class BoardRESTController {
 	
